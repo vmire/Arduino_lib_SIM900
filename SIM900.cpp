@@ -76,6 +76,11 @@ void SIM900::init(char* pinNumber){
 			if(answer>0) return;
 		}
 	}
+
+	/*
+	 * Mode texte
+	 */	
+	sendAtCommandAndCheckOK("AT+CMGF=1",buffer,500);    // sets the SMS mode to text
 }
 
 /*
@@ -298,10 +303,9 @@ uint8_t SIM900::sendSMS(char* phoneNumber,char* msg){
  * Lecture d'un SMS
  * Réponse: le message du SMS, ou NULL si erreur
  */
-char* SIM900::readSMS(uint8_t smsIdx, char* num_tel){
+char* SIM900::readSMS(uint8_t smsIdx, char* num_tel,unsigned int timeout){
 	Serial.println("SIM900::readSMS");
-	sendAtCommandAndCheckOK("AT+CMGF=1",buffer,500);    // sets the SMS mode to text
-	answer = sendAtCommandAndCheckOK("AT+CMGR=1",buffer,500);    //Récupère le SMS n°1
+	answer = sendAtCommandAndCheckOK("AT+CMGR=1",buffer,timeout);    //Récupère le SMS n°1
 	if( answer==0 && strcmp("+CMGR:",buffer)<0 ){
 		//Il y a un SMS
 		
@@ -320,6 +324,7 @@ char* SIM900::readSMS(uint8_t smsIdx, char* num_tel){
 		return msg;
 	}
 	else{
+		Serial.print("response:"); Serial.println(answer);
 		return NULL;
 	}
 }

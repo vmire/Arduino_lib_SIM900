@@ -17,7 +17,7 @@ public:
 	uint8_t sendAtCommandAndCheckOK(char* command, char* response, unsigned int timeout);
 	uint8_t checkOK(char* response, unsigned int timeout);
 	uint8_t sendSMS(char* phoneNumber,char* msg);
-	char* readSMS(uint8_t smsIdx, char* num_tel);
+	char* readSMS(uint8_t smsIdx, char* num_tel, unsigned int timeout);
 	uint8_t deleteSMS(uint8_t smsIdx);
 	boolean isRegistered();
 	void debugLastError();
